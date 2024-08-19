@@ -1,3 +1,84 @@
-<div style="margin: 100px;text-align: center;height: max-content;">
-  <button class="btn btn-primary" (click)="alert()">عرض</button>
-</div>
+<!-- <button (click)="read()">read</button> -->
+
+<div *ngIf="isLoading; then thenBlock; else elseBlock"></div>
+<ng-template #thenBlock>
+  <div style="text-align: center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+</ng-template>
+<!-- 1 -->
+<ng-template #elseBlock>
+  <div *ngIf="isError; then thenBlock1; else elseBlock1"></div>
+  <ng-template #thenBlock1>
+    <div style="text-align: center">
+      <div>
+        <div
+          style="
+            border: 1px solid rgb(255, 8, 8);
+            border-radius: 60px;
+            width: 500px;
+            margin: auto;
+            height: 300px;
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            background-color: aliceblue;
+          "
+        >
+          <div style="width: -webkit-fill-available">
+            <div style="margin: 10px; color: red">
+              {{ error }}
+            </div>
+
+            <button
+              *ngIf="!isSearchMode"
+              (click)="read()"
+              class="btn btn-outline-danger"
+            >
+              اعادة المحاولة
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #elseBlock1>
+    <div *ngIf="resultData.length == 0" style="text-align: center">
+      لاتوجد طلبات معلقة
+    </div>
+    <div
+      style="
+      margin: 5px;
+        display: grid;
+        grid-template-rows: 400px 400px 400px 400px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      "
+    >
+      <ng-template ngFor let-item [ngForOf]="resultData" let-c="index">
+        <div
+          style="
+            margin: 10px;
+            background-color: cornsilk;
+            border: 1px solid;
+            border-radius: 70px;
+          "
+        >
+          <div>
+            <img
+              style="width: 300px; height: 300px; margin: 10px"
+              [src]="item.category_image_path + item.image"
+              alt=""
+              srcset=""
+            />
+          </div>
+
+          <div style="text-align: center; font-weight: 800">
+            {{ item.name }}
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+</ng-template>
