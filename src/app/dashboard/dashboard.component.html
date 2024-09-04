@@ -1,4 +1,38 @@
-<!-- <button (click)="read()">read</button> -->
+<div
+  style="
+    background-color: #93ff93;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+  "
+>
+  <span> مطعم الارض خضراء يرحب بكم </span>
+</div>
+<div
+  style="
+    background-color: #91ffdc;
+    height: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 3px;
+  "
+>
+  <img src="http://greenland-rest.com/assets/cart.svg" alt="" />
+  <img src="http://greenland-rest.com/assets/discounts.svg" alt="" />
+
+  <img src="http://greenland-rest.com/assets/cart-large-linear.svg" alt="" />
+
+</div>
+
+<div *ngIf="latitude && longitude">
+  <p>Latitude: {{ latitude }}</p>
+  <p>Longitude: {{ longitude }}</p>
+</div>
+<div *ngIf="errorMessage">
+  <p>Error: {{ errorMessage }}</p>
+</div>
+
 
 <div *ngIf="isLoading; then thenBlock; else elseBlock"></div>
 <ng-template #thenBlock>
@@ -18,7 +52,7 @@
           style="
             border: 1px solid rgb(255, 8, 8);
             border-radius: 60px;
-            width: 500px;
+            width: 200px;
             margin: auto;
             height: 300px;
             display: flex;
@@ -48,33 +82,16 @@
     <div *ngIf="resultData.length == 0" style="text-align: center">
       لاتوجد طلبات معلقة
     </div>
-    <div
-      style="
-      margin: 5px;
-        display: grid;
-        grid-template-rows: 400px 400px 400px 400px;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-      "
-    >
+    <div class="card-container">
       <ng-template ngFor let-item [ngForOf]="resultData" let-c="index">
-        <div
-          style="
-            margin: 10px;
-            background-color: cornsilk;
-            border: 1px solid;
-            border-radius: 70px;
-          "
-        >
-          <div>
+        <div class="card">
+          <div class="card-image">
             <img
-              style="width: 300px; height: 300px; margin: 10px"
               [src]="item.category_image_path + item.image"
-              alt=""
-              srcset=""
+              alt="{{ item.name }}"
             />
           </div>
-
-          <div style="text-align: center; font-weight: 800">
+          <div class="card-title">
             {{ item.name }}
           </div>
         </div>

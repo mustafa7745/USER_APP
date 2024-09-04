@@ -28,7 +28,8 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.requestServer.sharedMethod.browserPlatform(async () => {
-      this.read();
+      // this.read();
+      this.getLocation();
     });
   }
   async read() {
@@ -62,5 +63,43 @@ export class DashboardComponent {
         this.error = e;
       }
     );
+  }
+
+  latitude: number | undefined;
+  longitude: number | undefined;
+  errorMessage: string | undefined;
+
+  // ngOnInit(): void {
+  //   this.getLocation();
+  // }
+
+  getLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+        },
+        (error) => {
+          this.errorMessage = this.getErrorMessage(error.code);
+        }
+      );
+    } else {
+      this.errorMessage = 'Geolocation is not supported by this browser.';
+    }
+  }
+
+  private getErrorMessage(errorCode: number): string {
+    switch (errorCode) {
+      case GeolocationPositionError.PERMISSION_DENIED:
+        return 'User denied the request for Geolocation.';
+      case GeolocationPositionError.POSITION_UNAVAILABLE:
+        return 'Location information is unavailable.';
+      case GeolocationPositionError.TIMEOUT:
+        return 'The request to get user location timed out.';
+
+      default:
+        return 'An unknown error occurred.';
+    }
   }
 }
